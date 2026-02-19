@@ -67,7 +67,7 @@ export default function LoginPage({ onLogin }: any) {
             borderRadius: 10,
             overflow: "hidden",
             bgcolor: "white",
-            minHeight: "750px",
+            minHeight: "350px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
