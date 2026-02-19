@@ -1,5 +1,6 @@
 import { Box, Button, TextField } from "@mui/material";
 import React, { useState } from "react";
+import Swal from 'sweetalert2';
 
 interface Props {
   onLoad: (year: number, month: number) => void;
@@ -10,12 +11,19 @@ const ReportFilters: React.FC<Props> = ({ onLoad }) => {
   const [month, setMonth] = useState<number | "">("");
 
   const handleClick = () => {
-    if (!year || !month) {
-      alert("Ingresá año y mes");
-      return;
-    }
-    onLoad(Number(year), Number(month));
-  };
+  if (!year || !month) {
+    Swal.fire({
+      title: 'Campos incompletos',
+      text: 'Por favor, ingresá el año y el mes para continuar.',
+      icon: 'warning',
+      confirmButtonColor: '#1877F2', // El color azul que estás usando en el proyecto
+      confirmButtonText: 'Entendido'
+    });
+    return;
+  }
+  
+  onLoad(Number(year), Number(month));
+};
 
   return (
     <Box sx={{ border: "1px solid #ccc", padding: 2, marginBottom: 3, backgroundColor: "#fafafa" }}>
