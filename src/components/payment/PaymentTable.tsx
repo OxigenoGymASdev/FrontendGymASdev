@@ -23,7 +23,6 @@ const MONTHS = [
   "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
 ];
 
-// Función auxiliar para formatear la fecha de pago
 const formatDate = (date: any) => {
   if (!date) return "—";
   const d = new Date(date);
@@ -51,7 +50,6 @@ export const PaymentTable = ({
 }: Props) => {
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  // Ordenar cuotas disponibles por fecha de vigencia
   const sortedShares = useMemo(() => {
     return [...shares].sort((a, b) => 
       new Date(b.quoteDate).getTime() - new Date(a.quoteDate).getTime()
@@ -76,11 +74,7 @@ export const PaymentTable = ({
 
         <TableBody>
           {payments.map((p) => (
-            <TableRow 
-              key={p._id} 
-              hover 
-              sx={{ bgcolor: p.isPaid ? "rgba(76, 175, 80, 0.02)" : "inherit" }}
-            >
+            <TableRow key={p._id} hover sx={{ bgcolor: p.isPaid ? "rgba(76, 175, 80, 0.02)" : "inherit" }}>
               <TableCell sx={{ fontWeight: 600 }}>
                 {p.socioId ? `${p.socioId.apellido}, ${p.socioId.nombre}` : "Sin socio"}
               </TableCell>
@@ -88,36 +82,30 @@ export const PaymentTable = ({
               <TableCell>{p.socioId?.trainerId?.username ?? "-"}</TableCell>
 
               <TableCell>
-                {editingId === p._id && !p.isPaid ? (
+                {editingId === p._id ? (
                   <Select
                     size="small"
-                    defaultOpen
                     value={p.shareId?._id ?? ""}
                     onChange={(e) => {
-                      onUpdateShare(p._id, e.target.value);
+                      onUpdateShare(p._id, e.target.value as string);
                       setEditingId(null);
                     }}
-                    onClose={() => setEditingId(null)}
-                    sx={{ minWidth: 180 }}
+                    onBlur={() => setEditingId(null)}
+                    autoFocus
+                    sx={{ minWidth: 150 }}
                   >
                     {sortedShares.map((s) => (
                       <MenuItem key={s._id} value={s._id}>
-                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                          <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                            ${s.amount} - {s.numberDays} días
-                          </Typography>
-                          <Typography variant="caption" color="textSecondary">
-                            Vigencia: {formatDate(s.quoteDate)}
-                          </Typography>
-                        </Box>
+                        ${s.amount} - {s.numberDays}d
                       </MenuItem>
                     ))}
                   </Select>
                 ) : (
                   <Box display="flex" alignItems="center" gap={1}>
-                    <Typography variant="body2" sx={{ fontWeight: 700, color: "#1e293b" }}>
+                    <Typography variant="body2" sx={{ fontWeight: 700 }}>
                       ${p.shareId?.amount ?? 0}
                     </Typography>
+                    {/* Solo permitimos editar si NO está pagado */}
                     {!p.isPaid && (
                       <IconButton size="small" onClick={() => setEditingId(p._id)} sx={{ color: '#1877F2' }}>
                         <Edit fontSize="small" />
@@ -131,24 +119,17 @@ export const PaymentTable = ({
               <TableCell>{MONTHS[p.month]}</TableCell>
 
               <TableCell align="center">
-                <Tooltip title={p.isPaid ? "Marcar como pendiente" : "Marcar como pagado"}>
-                  <Checkbox
-                    checked={p.isPaid}
-                    onChange={() => onToggle(p._id)}
-                    color="primary"
-                    sx={{ '& .MuiSvgIcon-root': { fontSize: 26 } }}
-                  />
-                </Tooltip>
+                <Checkbox
+                  checked={p.isPaid}
+                  onChange={() => onToggle(p._id)}
+                  color="primary"
+                />
               </TableCell>
 
               <TableCell>
-                {p.isPaid ? (
-                  <Typography variant="body2" sx={{ color: "#2e7d32", fontWeight: 600 }}>
-                    {formatDate(p.paymentDate)}
-                  </Typography>
-                ) : (
-                  <Typography variant="body2" color="textDisabled">Pendiente</Typography>
-                )}
+                <Typography variant="body2" sx={{ color: p.isPaid ? "#2e7d32" : "text.disabled", fontWeight: p.isPaid ? 600 : 400 }}>
+                  {p.isPaid ? formatDate(p.paymentDate) : "Pendiente"}
+                </Typography>
               </TableCell>
 
               <TableCell align="center">
