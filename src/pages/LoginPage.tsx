@@ -251,7 +251,7 @@ export default function LoginPage({ onLogin }: any) {
                   fontSize: { xs: '0.7rem', sm: '0.8rem' } 
                 }}
               >
-                 © {new Date().getFullYear()} <strong> Andrés Silva | AsDev</strong>. Todos los derechos reservados. 
+                 © {new Date().getFullYear()} <strong> Andrés Silva | Desarrollador de Software</strong>. Todos los derechos reservados. 
               </Typography>
             </Container>
           </Box>
