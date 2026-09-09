@@ -16,6 +16,7 @@ import LockIcon from '@mui/icons-material/Lock';
 // Importamos los iconos de visibilidad
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import BackButton from "../components/BackButton";
 
 export default function LoginPage({ onLogin }: any) {
   const [dni, setDni] = useState("");
@@ -58,6 +59,7 @@ export default function LoginPage({ onLogin }: any) {
         py: 4,
       }}
     >
+      <BackButton to="/" />
       <Container sx={{ maxWidth: "1000px !important" }}> 
         <Paper
           elevation={24}
@@ -74,19 +76,24 @@ export default function LoginPage({ onLogin }: any) {
           }}
         >
           <Box
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundImage: 'url("/gym.jpg")',
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              opacity: 0.9,
-              zIndex: 0,
-            }}
-          />
+  component="img"
+  src="/gym.webp"
+  alt="Oxigeno Espacio Deportivo"
+  sx={{
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    objectPosition: "center",
+    opacity: 0.9,
+    zIndex: 0,
+  }}
+  {...({ fetchPriority: "high" } as React.ImgHTMLAttributes<HTMLImageElement>)}
+  decoding="sync"
+/>
+
 
           <Box
             sx={{
@@ -233,6 +240,20 @@ export default function LoginPage({ onLogin }: any) {
                 Iniciar Sesión
               </Button>
             </Stack>
+            <Container maxWidth="lg"
+            sx={{ py: 4 }}>
+              
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  color: '#6b7280', 
+                  fontWeight: 500,
+                  fontSize: { xs: '0.7rem', sm: '0.8rem' } 
+                }}
+              >
+                 © {new Date().getFullYear()} <strong> Andrés Silva | AsDev</strong>. Todos los derechos reservados. 
+              </Typography>
+            </Container>
           </Box>
         </Paper>
       </Container>
