@@ -34,7 +34,7 @@ export default function StartPage() {
           <Box
             component="img"
             src="/gym.webp"
-            alt="Gimnasio Silcor Tech"
+            alt="Oxigeno Espacio Deportivo"
             sx={{
               position: "absolute",
               top: 0,
