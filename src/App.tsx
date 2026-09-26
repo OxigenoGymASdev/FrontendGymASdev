@@ -2,9 +2,6 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Box, Typography, Container } from "@mui/material"; 
 import LoginPage from "./pages/LoginPage";
-import StartPage from "./pages/StartPage";
-import PadelPage from "./pages/PadelPage";
-import RoutinePage from "./pages/RoutinePage";
 import DashboardPage from "./pages/DashboardPage";
 import type { User } from "./types/user.types";
 import UsersPage from "./pages/UsersPage";
@@ -12,6 +9,12 @@ import { SociosPage } from "./pages/SociosPage";
 import SharesPage from "./pages/SharesPage";
 import { PaymentsPage } from "./pages/PaymentPage";
 import ReportsPage from "./pages/ReportsPage";
+import StartPage from "./pages/StartPage";
+import PadelPage from "./pages/PadelPage";
+import RoutinePage from "./pages/RoutinePage";
+import PadelAdminPage from "./pages/PadelAdminPage";
+import BookingWatcher from "./components/padel/BookingWatcher";
+
 
 export default function App() {
   const [loggedUser, setLoggedUser] = useState<User | null>(null);
@@ -50,9 +53,11 @@ export default function App() {
           flexDirection: 'column', 
           height: '100vh', 
           overflow: 'hidden',
-          bgcolor: "#f5f7fb" 
+          bgcolor: "#f5f7fb"
         }}>
-          
+          {/* Control global de reservas nuevas: avisa en cualquier pantalla (solo admin y turnero) */}
+          {(loggedUser.role === "ADMINISTRATIVO" || loggedUser.role === "TURNERO") && <BookingWatcher />}
+
           {/* Contenedor de rutas con scroll independiente */}
           <Box sx={{ 
             flex: 1, 
@@ -61,11 +66,19 @@ export default function App() {
           }}>
             <Routes>
               <Route path="/" element={<DashboardPage user={loggedUser} onLogout={handleLogout} />} />
-              <Route path="/users" element={<UsersPage />} />
-              <Route path="/socios" element={<SociosPage />} />
-              <Route path="/shares" element={<SharesPage />} />
-              <Route path="/payments" element={<PaymentsPage user={loggedUser}/>} />
-              <Route path="/reports" element={<ReportsPage />} />
+              {/* El turnero solo puede entrar al inicio y a padel (aunque escriba otra dirección) */}
+              {loggedUser.role !== "TURNERO" && (
+                <>
+                  <Route path="/users" element={<UsersPage />} />
+                  <Route path="/socios" element={<SociosPage />} />
+                  <Route path="/shares" element={<SharesPage />} />
+                  <Route path="/payments" element={<PaymentsPage user={loggedUser}/>} />
+                  <Route path="/reports" element={<ReportsPage />} />
+                </>
+              )}
+              {(loggedUser.role === "ADMINISTRATIVO" || loggedUser.role === "TURNERO") && (
+                <Route path="/padel-admin" element={<PadelAdminPage user={loggedUser} />} />
+              )}
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </Box>

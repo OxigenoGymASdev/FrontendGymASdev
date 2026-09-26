@@ -15,6 +15,7 @@ import {
   InputAdornment
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import HeaderBookingBell from "../components/padel/HeaderBookingBell";
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -141,12 +142,19 @@ export const SociosPage = () => {
       {/* HEADER */}
       <Box sx={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", mb: 3 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-          <Box component="img" src="/logo.png" sx={{ width: 56, height: 56, borderRadius: "50%" }} />
+          <Box component="img" src="/logo.png" sx={{ width: { xs: 44, sm: 56, md: 64 },
+              height: { xs: 44, sm: 56, md: 64 },
+              borderRadius: "50%",
+              objectFit: "cover",
+              boxShadow: "0 4px 12px rgba(24,119,242,0.15)", }} />
           <Typography sx={{ fontWeight: 800, color: "#1877F2" }}>Oxígeno Espacio Deportivo</Typography>
         </Box>
-        <IconButton onClick={() => navigate("/")} sx={{ color: "#1877F2", bgcolor: "rgba(24, 119, 242, 0.05)" }}>
-          <HomeIcon fontSize="large" />
-        </IconButton>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <HeaderBookingBell />
+          <IconButton onClick={() => navigate("/")} sx={{ color: "#1877F2", bgcolor: "rgba(24, 119, 242, 0.05)" }}>
+            <HomeIcon fontSize="large" />
+          </IconButton>
+        </Box>
       </Box>
 
       <Container maxWidth={false} sx={{ maxWidth: 2000, mx: "auto" }}>

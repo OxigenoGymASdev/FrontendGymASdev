@@ -18,6 +18,7 @@ import {
   Divider,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import HeaderBookingBell from "../components/padel/HeaderBookingBell";
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
 import SortIcon from '@mui/icons-material/Sort';
@@ -166,16 +167,23 @@ export const PaymentsPage = ({ user }: Props) => {
       {/* HEADER */}
       <Box sx={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", mb: { xs: 2, sm: 3 } }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 1, sm: 1.5 } }}>
-          <Box component="img" src="/logo.png" sx={{ width: { xs: 45, sm: 56 }, height: { xs: 45, sm: 56 }, borderRadius: "50%" }} />
+          <Box component="img" src="/logo.png" sx={{ width: { xs: 44, sm: 56, md: 64 },
+              height: { xs: 44, sm: 56, md: 64 },
+              borderRadius: "50%",
+              objectFit: "cover",
+              boxShadow: "0 4px 12px rgba(24,119,242,0.15)", }} />
           <Typography sx={{ fontWeight: 800, color: "#1877F2", fontSize: { xs: 12, sm: 16 } }}>
             Oxígeno Espacio Deportivo
           </Typography>
         </Box>
-        <Tooltip title="Volver al Inicio">
-          <IconButton onClick={() => navigate("/")} sx={{ color: "#1877F2", bgcolor: "rgba(24, 119, 242, 0.1)" }}>
-            <HomeIcon sx={{ fontSize: { xs: 28, sm: 32 } }} />
-          </IconButton>
-        </Tooltip>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <HeaderBookingBell />
+          <Tooltip title="Volver al Inicio">
+            <IconButton onClick={() => navigate("/")} sx={{ color: "#1877F2", bgcolor: "rgba(24, 119, 242, 0.1)" }}>
+              <HomeIcon sx={{ fontSize: { xs: 28, sm: 32 } }} />
+            </IconButton>
+          </Tooltip>
+        </Box>
       </Box>
 
       {/* CONTENIDO PRINCIPAL */}

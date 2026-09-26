@@ -14,9 +14,11 @@ import {
   Folder,
   BarChart,
   Logout,
+  SportsTennis,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import type { User } from "../types/user.types";
+import BookingNotifications from "../components/padel/BookingNotifications";
 
 interface Props {
   user: User;
@@ -38,12 +40,16 @@ const DashboardPage: React.FC<Props> = ({ user, onLogout }) => {
     { title: "Socios", icon: <AccountBalance sx={{ fontSize: 40 }} />, path: "/socios", description: "Listado de miembros" },
     { title: "Cuotas", icon: <Folder sx={{ fontSize: 40 }} />, path: "/shares", description: "Planes y precios" },
     { title: "Pagos", icon: <Payments sx={{ fontSize: 40 }} />, path: "/payments", description: "Control de cobros" },
+    { title: "Padel", icon: <SportsTennis sx={{ fontSize: 40 }} />, path: "/padel-admin", description: "Turnos y reservas" },
     { title: "Reportes", icon: <BarChart sx={{ fontSize: 40 }} />, path: "/reports", description: "Estadísticas mensuales" },
+    
   ];
 
   const visibleItems =
     user.role === "ADMINISTRATIVO"
       ? allItems
+      : user.role === "TURNERO"
+      ? allItems.filter((item) => item.title === "Padel") // el turnero solo gestiona padel
       : allItems.filter(
           (item) =>
             item.title === "Socios" ||
@@ -96,6 +102,8 @@ const DashboardPage: React.FC<Props> = ({ user, onLogout }) => {
           </Box>
         </Box>
 
+        <Stack direction="row" alignItems="center" spacing={1}>
+        {(user.role === "ADMINISTRATIVO" || user.role === "TURNERO") && <BookingNotifications />}
         <Button
           onClick={onLogout}
           startIcon={<Logout />}
@@ -108,6 +116,7 @@ const DashboardPage: React.FC<Props> = ({ user, onLogout }) => {
         >
           Cerrar sesión
         </Button>
+        </Stack>
       </Stack>
 
       {/* ===== CUERPO PRINCIPAL ===== */}
